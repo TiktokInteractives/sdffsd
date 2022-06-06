@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TikTok LIVE GAMES - video memes</title>
+
+    <link rel="stylesheet" href="asset/./style.css">
+
+    <script src="asset//lib/socket.io.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="asset//lib/vue.global.js"></script>
+
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+
+    <link rel="preload" as="video" href="./video/memes/кот качает головой.mp4">
+    <link rel="preload" as="video" href="./video/memes/кот поет.mp4">
+    <link rel="preload" as="video" href="./video/memes/Мистер дудец.mp4">
+    <link rel="preload" as="video" href="./video/memes/медведи.mp4">
+    <link rel="preload" as="video" href="./video/memes/Львумба.mp4">
+    <link rel="preload" as="video" href="./video/memes/Плыли мы по морю ветер мачту рвал.mp4">
+    <link rel="preload" as="video" href="./video/memes/польская корова.mp4">
+    <link rel="preload" as="video" href="./video/memes/танец с пивом.mp4">
+    <link rel="preload" as="video" href="./video/memes/Тян1.mp4">
+    <link rel="preload" as="video" href="./video/memes/Тян2.mp4">
+    <link rel="preload" as="video" href="./video/memes/чика танцует.mp4">
+    <link rel="preload" as="video" href="./video/memes/шрек играет на саксофоне.mp4">
+</head>
+
+<body>
+
+    <div id="app">
+        <div class="top-right" :class="panel.show ? '' : 'op-25'">
+            <button @click="panel.show = !panel.show">{{panel.show ? t('Скрыть') : t('Показать')}}</button>
+            <template v-if="panel.show">
+                <div class="inputFields">
+                    <input type="text" v-model="uniqueId" :disabled="login !== 'dwins.all'">
+                    <input type="button" id="connectButton" :value="t('Connect')" @click="connect()">
+                </div>
+                <div>{{liveStatus ? liveStatus : t('Not connect')}}</div>
+            </template>
+        </div>
+
+        <div class="video-container">
+            <video autoplay loop class="video" id="video" :key="videoActiveName" playsinline>
+                <source v-if="videoActiveName" :src="'./video/memes/'+videoActiveName+'.mp4'" type="video/mp4">
+            </video>
+        </div>
+        <div class="progress">
+            <div class="msg">{{progressMsg}}</div>
+            <div class="blocked"
+                :style="{ width: (((videoTimerCountDefault - videoTimerCount) / videoTimerCountDefault) * 100) +'%' }">
+            </div>
+        </div>
+        <div class="column-4">
+            <div class="mem-container" v-for="(val, key) in videos" :key="key" @click="playVideo(val.presentId)"
+                :class="videoActiveName === val.name ? 'active' : ''">
+                <img class="mem" :src="'./video/memes/img/'+val.name+'.png'" alt="" src="https://apps.tiktok-live-games.stream/">
+                <img v-if="val?.presentId" class="present"
+                    :src="presentImg(val.presentId)" alt="" src="https://apps.tiktok-live-games.stream/">
+            </div>
+        </div>
+    </div>
+
+    <script src="asset//connection.js"></script>
+    <script src="asset/./app.js"></script>
+</body>
+
+</html>
